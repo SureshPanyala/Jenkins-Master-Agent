@@ -1,0 +1,102 @@
+
+# 🧰 Install Jenkins on RHEL / Rocky (Final Working Guide)
+
+## 1️⃣ Install Java (required)
+
+```bash
+sudo yum install -y fontconfig java-21-openjdk
+java -version
+```
+
+✔ Confirm Java 21 is installed
+
+---
+
+## 2️⃣ Add Jenkins repository (using curl ✅)
+
+```bash
+sudo curl -L -o /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/rpm-stable/jenkins.repo
+```
+
+---
+
+## 3️⃣ Add GPG key (correct + working)
+
+```bash
+sudo rpm --import https://pkg.jenkins.io/rpm-stable/jenkins.io.key
+```
+
+👉 If needed (safe fallback):
+
+```bash
+sudo curl -L -o /tmp/jenkins.key https://pkg.jenkins.io/rpm-stable/jenkins.io.key
+sudo rpm --import /tmp/jenkins.key
+```
+
+---
+
+## 4️⃣ Clean yum cache
+
+```bash
+sudo yum clean all
+```
+
+---
+
+## 5️⃣ Install Jenkins
+
+```bash
+sudo yum install -y jenkins
+```
+
+✔ Now it should install without errors
+
+---
+
+## 6️⃣ Start Jenkins service
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+```
+
+---
+
+## 7️⃣ Check status
+
+```bash
+sudo systemctl status jenkins
+```
+
+✔ Look for:
+
+```
+active (running)
+```
+
+---
+
+## 8️⃣ Open firewall (important in RHEL)
+
+```bash
+sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --reload
+```
+
+---
+
+## 9️⃣ Access Jenkins
+
+```
+http://<your-server-ip>:8080
+```
+
+---
+
+## 🔐 10️⃣ Unlock Jenkins
+
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
